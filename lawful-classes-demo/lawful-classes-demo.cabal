@@ -2,20 +2,32 @@ cabal-version:   3.0
 name:            lawful-classes-demo
 version:         0.1.0.0
 synopsis:        Demo project for lawful-classes
+description:
+  A demo of the @lawful-classes@ ecosystem, including a library exposing a
+  class with some laws and an instance of said class, and a test-suite which
+  validates the instance obeys to the laws, both using Hedgehog and QuickCheck.
+  .
+  Note, in a real-world project, one would use either Hedgehog or QuickCheck to
+  check the laws, and the class and instance(s) are likely found in different
+  packages.
 
--- description:
 homepage:        https://github.com/NicolasT/lawful-classes
 license:         Apache-2.0
 license-file:    LICENSE
 author:          Nicolas Trangez
 maintainer:      ikke@nicolast.be
-
--- copyright:
+copyright:       (c) 2023, Nicolas Trangez
 category:        Testing
 build-type:      Simple
 extra-doc-files: CHANGELOG.md
 
 -- extra-source-files:
+
+source-repository head
+  type:     git
+  location: https://github.com/NicolasT/lawful-classes.git
+  subdir:   lawful-classes-demo
+  branch:   main
 
 common warnings
   ghc-options: -Wall
