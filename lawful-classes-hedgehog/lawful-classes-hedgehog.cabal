@@ -2,20 +2,27 @@ cabal-version:   3.0
 name:            lawful-classes-hedgehog
 version:         0.1.0.0
 synopsis:        Hedgehog support for lawful-classes
+description:
+  Support code to check @lawful-classes@ laws using Hedgehog and,
+  optionally, Tasty.
 
--- description:
 homepage:        https://github.com/NicolasT/lawful-classes
 license:         Apache-2.0
 license-file:    LICENSE
 author:          Nicolas Trangez
 maintainer:      ikke@nicolast.be
-
--- copyright:
+copyright:       (c) 2023, Nicolas Trangez
 category:        Testing
 build-type:      Simple
 extra-doc-files: CHANGELOG.md
 
 -- extra-source-files:
+
+source-repository head
+  type:     git
+  location: https://github.com/NicolasT/lawful-classes.git
+  subdir:   lawful-classes-hedgehog
+  branch:   main
 
 common warnings
   ghc-options: -Wall
