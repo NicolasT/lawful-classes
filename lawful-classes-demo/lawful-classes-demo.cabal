@@ -36,12 +36,20 @@ common warnings
 
 library
   import:           warnings
-  exposed-modules:  MyLib
+  exposed-modules:  Test.Lawful.Demo
 
   -- other-modules:
-  -- other-extensions:
+  other-extensions:
+    DeriveFunctor
+    DerivingStrategies
+    GeneralizedNewtypeDeriving
+    MultiParamTypeClasses
+
   build-depends:
-    , base ^>=4.14.3.0 || ^>=4.15.1.0 || ^>=4.16.4.0 || ^>=4.17.0.0
+    , base                  ^>=4.14.3.0 || ^>=4.15.1.0 || ^>=4.16.4.0 || ^>=4.17.0.0
+    , lawful-classes-types  ^>=0.1.0.0
+    , mtl                   ^>=2.2.2
+    , transformers          ^>=0.5.6.2
 
   hs-source-dirs:   src
   default-language: Haskell2010
@@ -51,10 +59,16 @@ test-suite lawful-classes-demo-test
   default-language: Haskell2010
 
   -- other-modules:
-  -- other-extensions:
+  other-extensions: TypeApplications
   type:             exitcode-stdio-1.0
   hs-source-dirs:   test
   main-is:          Main.hs
   build-depends:
-    , base                 ^>=4.14.3.0 || ^>=4.15.1.0 || ^>=4.16.4.0 || ^>=4.17.0.0
+    , base                       ^>=4.14.3.0 || ^>=4.15.1.0 || ^>=4.16.4.0 || ^>=4.17.0.0
+    , hedgehog                   ^>=1.2
     , lawful-classes-demo
+    , lawful-classes-hedgehog    ^>=0.1.0.0
+    , lawful-classes-quickcheck  ^>=0.1.0.0
+    , QuickCheck                 ^>=2.14.2
+    , tasty                      ^>=1.4.3
+    , transformers               ^>=0.5.6.2
