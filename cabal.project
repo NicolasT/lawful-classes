@@ -1,0 +1,5 @@
+Packages:
+  lawful-classes-types
+  lawful-classes-hedgehog
+  lawful-classes-quickcheck
+  lawful-classes-demo
