@@ -31,7 +31,7 @@ common warnings
 
 library
   import:           warnings
-  exposed-modules:  MyLib
+  exposed-modules:  Test.Lawful.Types
 
   -- other-modules:
   -- other-extensions:
