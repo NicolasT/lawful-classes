@@ -1,5 +1,9 @@
 # Revision history for lawful-classes-quickcheck
 
+## 0.1.2.0 -- YYYY-mm-dd
+
+* Add `Test.Lawful.QuickCheck.forAll(Show)`.
+
 ## 0.1.1.1 -- 2023-02-01
 
 * Support GHC 9.2.4 / base 4.16.3.0.
