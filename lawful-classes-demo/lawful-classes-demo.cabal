@@ -57,9 +57,11 @@ library
 test-suite lawful-classes-demo-test
   import:           warnings
   default-language: Haskell2010
+  other-modules:    TastyUtils
+  other-extensions:
+    NoMonomorphismRestriction
+    TypeApplications
 
-  -- other-modules:
-  other-extensions: TypeApplications
   type:             exitcode-stdio-1.0
   hs-source-dirs:   test
   main-is:          Main.hs
@@ -71,4 +73,5 @@ test-suite lawful-classes-demo-test
     , lawful-classes-quickcheck  ^>=0.1.0.0
     , QuickCheck                 ^>=2.14.2
     , tasty                      ^>=1.4.3
+    , tasty-expected-failure     ^>=0.12.3
     , transformers               ^>=0.5.6.2
