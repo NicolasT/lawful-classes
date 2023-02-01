@@ -3,8 +3,7 @@
 
 module Main (main) where
 
-import Control.Monad.Trans.Class (lift)
-import Hedgehog (forAll, withTests)
+import Hedgehog (withTests)
 import qualified Hedgehog.Gen as Gen
 import qualified Hedgehog.Range as Range
 import TastyUtils (mayFail)
@@ -19,7 +18,6 @@ import Test.Lawful.Demo
 import qualified Test.Lawful.Hedgehog as H
 import qualified Test.Lawful.QuickCheck as Q
 import Test.QuickCheck (arbitrary, once)
-import Test.QuickCheck.Monadic (pick)
 import Test.Tasty (TestTree, defaultMain, testGroup)
 
 main :: IO ()
@@ -33,13 +31,13 @@ tests =
         "DemoT"
         [ testGroup
             "monadDemoLaws"
-            [ H.testLaws "using Hedgehog" evalDemoT (monadDemoLaws genHedgehog),
-              Q.testLaws "using QuickCheck" evalDemoT (monadDemoLaws genQuickCheck)
+            [ H.testLaws "using Hedgehog" evalDemoT (monadDemoLaws (H.forAll genHedgehog)),
+              Q.testLaws "using QuickCheck" evalDemoT (monadDemoLaws (Q.forAll genQuickCheck))
             ],
           testGroup
             "monadDemoLaws'"
-            [ H.testLaws "using Hedgehog" evalDemoT (monadDemoLaws' genHedgehog),
-              Q.testLaws "using QuickCheck" evalDemoT (monadDemoLaws' genQuickCheck)
+            [ H.testLaws "using Hedgehog" evalDemoT (monadDemoLaws' (H.forAll genHedgehog)),
+              Q.testLaws "using QuickCheck" evalDemoT (monadDemoLaws' (Q.forAll genQuickCheck))
             ]
         ],
       testGroup
@@ -63,8 +61,8 @@ tests =
         [ mayFail $
             testGroup
               "monadDemoLaws"
-              [ H.testLaws "using Hedgehog" evalUnlawfulDemoT (monadDemoLaws genHedgehog),
-                Q.testLaws "using QuickCheck" evalUnlawfulDemoT (monadDemoLaws genQuickCheck)
+              [ H.testLaws "using Hedgehog" evalUnlawfulDemoT (monadDemoLaws (H.forAll genHedgehog)),
+                Q.testLaws "using QuickCheck" evalUnlawfulDemoT (monadDemoLaws (Q.forAll genQuickCheck))
               ]
         ],
       testGroup
@@ -78,7 +76,7 @@ tests =
         ]
     ]
   where
-    genHedgehog = lift $ forAll $ Gen.integral $ Range.linearBounded @Int
-    genQuickCheck = lift $ pick $ arbitrary @Int
+    genHedgehog = Gen.integral (Range.linearBounded @Int)
+    genQuickCheck = arbitrary @Int
     _11 :: (Applicative m) => m Int
     _11 = pure 11

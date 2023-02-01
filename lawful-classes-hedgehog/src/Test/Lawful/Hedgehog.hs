@@ -15,12 +15,19 @@ module Test.Lawful.Hedgehog
     testLaws,
     testLawsWith,
 
+    -- * Utilities
+    forAll,
+    forAllShow,
+
     -- * Plumbing
     toProperty,
   )
 where
 
-import Hedgehog (Property, PropertyT, assert, discard, evalM, property)
+import Control.Monad.Trans.Class (MonadTrans, lift)
+import GHC.Stack (HasCallStack, withFrozenCallStack)
+import Hedgehog (Gen, Property, PropertyT, assert, discard, evalM, property)
+import qualified Hedgehog as H
 import Test.Lawful.Types (Law, Laws)
 import Test.Tasty (TestName, TestTree, testGroup)
 import Test.Tasty.Hedgehog (testProperty)
@@ -46,3 +53,22 @@ testLaws = testLawsWith id
 -- @since 0.1.1.0
 testLawsWith :: (Property -> Property) -> TestName -> (forall a. m a -> PropertyT IO a) -> Laws m -> TestTree
 testLawsWith fn name run laws = testGroup name [testProperty n (fn $ toProperty run l) | (n, l) <- laws]
+
+-- | Lifted version of 'H.forAll'.
+--
+-- This can be used to easily create generators for laws which need them.
+--
+-- @since 0.1.2.0
+forAll :: (MonadTrans t, Monad m, Show a, HasCallStack) => Gen a -> t (PropertyT m) a
+forAll gen = withFrozenCallStack $ lift (H.forAll gen)
+
+-- | Lifted version of 'H.forAllWith'.
+--
+-- Like 'forAll', but for types without a 'Show' instance (or, for which
+-- another stringification functions but 'show' should be used).
+--
+-- This can be used to earily create generators for laws which need them.
+--
+-- @since 0.1.2.0
+forAllShow :: (MonadTrans t, Monad m, HasCallStack) => (a -> String) -> Gen a -> t (PropertyT m) a
+forAllShow shw gen = withFrozenCallStack $ lift (H.forAllWith shw gen)
