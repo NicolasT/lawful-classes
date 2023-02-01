@@ -1,6 +1,6 @@
 cabal-version:   3.0
 name:            lawful-classes-hedgehog
-version:         0.1.1.0
+version:         0.1.1.1
 synopsis:        Hedgehog support for lawful-classes
 description:
   Support code to check @lawful-classes@ laws using Hedgehog and,
@@ -18,7 +18,7 @@ extra-doc-files: CHANGELOG.md
 
 -- extra-source-files:
 
-tested-with:     GHC ==8.10.7 || ==9.0.2 || ==9.2.5 || ==9.4.4
+tested-with:     GHC ==8.10.7 || ==9.0.2 || ==9.2.4 || ==9.2.5 || ==9.4.4
 
 source-repository head
   type:     git
@@ -36,7 +36,7 @@ library
   -- other-modules:
   other-extensions: RankNTypes
   build-depends:
-    , base                  ^>=4.14.3.0 || ^>=4.15.1.0 || ^>=4.16.4.0 || ^>=4.17.0.0
+    , base                  ^>=4.14.3.0 || ^>=4.15.1.0 || ^>=4.16.3.0 || ^>=4.17.0.0
     , hedgehog              ^>=1.2
     , lawful-classes-types  ^>=0.1.0.0
     , tasty                 ^>=1.4.3

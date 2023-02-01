@@ -23,7 +23,7 @@ extra-doc-files: CHANGELOG.md
 
 -- extra-source-files:
 
-tested-with:     GHC ==8.10.7 || ==9.0.2 || ==9.2.5 || ==9.4.4
+tested-with:     GHC ==8.10.7 || ==9.0.2 || ==9.2.4 || ==9.2.5 || ==9.4.4
 
 source-repository head
   type:     git
@@ -46,7 +46,7 @@ library
     MultiParamTypeClasses
 
   build-depends:
-    , base                  ^>=4.14.3.0 || ^>=4.15.1.0 || ^>=4.16.4.0 || ^>=4.17.0.0
+    , base                  ^>=4.14.3.0 || ^>=4.15.1.0 || ^>=4.16.3.0 || ^>=4.17.0.0
     , lawful-classes-types  ^>=0.1.0.0
     , mtl                   ^>=2.2.2
     , transformers          ^>=0.5.6.2
@@ -66,7 +66,7 @@ test-suite lawful-classes-demo-test
   hs-source-dirs:   test
   main-is:          Main.hs
   build-depends:
-    , base                       ^>=4.14.3.0 || ^>=4.15.1.0 || ^>=4.16.4.0 || ^>=4.17.0.0
+    , base                       ^>=4.14.3.0 || ^>=4.15.1.0 || ^>=4.16.3.0 || ^>=4.17.0.0
     , hedgehog                   ^>=1.2
     , lawful-classes-demo
     , lawful-classes-hedgehog    ^>=0.1.1.0

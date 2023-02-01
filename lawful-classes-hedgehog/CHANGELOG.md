@@ -1,5 +1,9 @@
 # Revision history for lawful-classes-hedgehog
 
+## 0.1.1.1 -- YYYY-mm-dd
+
+* Support GHC 9.2.4 / base 4.16.3.0.
+
 ## 0.1.1.0 -- 2023-02-01
 
 * Add `Test.Lawful.Hedgehog.testLawsWith`.
