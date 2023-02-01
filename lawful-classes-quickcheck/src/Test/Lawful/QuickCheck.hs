@@ -12,6 +12,7 @@
 -- optionally, Tasty.
 module Test.Lawful.QuickCheck
   ( testLaws,
+    testLawsWith,
     toProperty,
   )
 where
@@ -28,4 +29,14 @@ toProperty run law = monadicIO $ maybe discard assert =<< run law
 
 -- | Given 'Laws', create a @tasty@ 'TestTree'.
 testLaws :: TestName -> (forall a. m a -> PropertyM IO a) -> Laws m -> TestTree
-testLaws name run laws = testGroup name [testProperty n (toProperty run l) | (n, l) <- laws]
+testLaws = testLawsWith id
+
+-- | Given 'Laws', create a @tasty@ 'TestTree', modifying all created
+-- 'Property's with the given function.
+--
+-- As an example, 'Test.QuickCheck.once' could be used to run every test only
+-- once.
+--
+-- @since 0.1.1.0
+testLawsWith :: (Property -> Property) -> TestName -> (forall a. m a -> PropertyM IO a) -> Laws m -> TestTree
+testLawsWith fn name run laws = testGroup name [testProperty n (fn $ toProperty run l) | (n, l) <- laws]
