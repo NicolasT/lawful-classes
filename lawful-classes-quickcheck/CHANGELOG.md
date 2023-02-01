@@ -1,6 +1,6 @@
 # Revision history for lawful-classes-quickcheck
 
-## 0.1.1.0 -- YYYY-mm-dd
+## 0.1.1.0 -- 2023-02-01
 
 * Add `Test.Lawful.QuickCheck.testLawsWith`.
 
