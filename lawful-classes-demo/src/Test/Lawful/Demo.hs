@@ -29,11 +29,16 @@ module Test.Lawful.Demo
     -- * Demo instances
     DemoT,
     evalDemoT,
+    Demo,
+    evalDemo,
     UnlawfulDemoT,
     evalUnlawfulDemoT,
+    UnlawfulDemo,
+    evalUnlawfulDemo,
   )
 where
 
+import Control.Monad.Identity (Identity, runIdentity)
 import Control.Monad.State.Class (get, put)
 import Control.Monad.Trans.Class (MonadTrans)
 import Control.Monad.Trans.State (StateT, evalStateT)
@@ -105,6 +110,13 @@ instance (Monad m) => MonadDemo Int (DemoT m) where
 evalDemoT :: (Monad m) => DemoT m a -> m a
 evalDemoT (DemoT act) = evalStateT act 0
 
+-- | A non-transformer version of 'DemoT'.
+type Demo = DemoT Identity
+
+-- | Evaluate a 'Demo'.
+evalDemo :: Demo a -> a
+evalDemo = runIdentity . evalDemoT
+
 -- | A demonstration unlawful 'Monad', instance of 'MonadDemo'.
 --
 -- Its instance of 'MonadDemo' is such that any value greater than 10 is not
@@ -122,3 +134,10 @@ instance (Monad m) => MonadDemo Int (UnlawfulDemoT m) where
 -- | Evaluate an 'UnlawfulDemoT' into its base 'Monad'.
 evalUnlawfulDemoT :: (Monad m) => UnlawfulDemoT m a -> m a
 evalUnlawfulDemoT (UnlawfulDemoT act) = evalStateT act 0
+
+-- | A non-transformer version of 'UnlawfulDemoT'.
+type UnlawfulDemo = UnlawfulDemoT Identity
+
+-- | Evaluate an 'UnlawfulDemo'.
+evalUnlawfulDemo :: UnlawfulDemo a -> a
+evalUnlawfulDemo = runIdentity . evalUnlawfulDemoT
