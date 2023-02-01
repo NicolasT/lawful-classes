@@ -26,9 +26,11 @@ module Test.Lawful.Demo
     monadDemoLaws,
     monadDemoLaws',
 
-    -- * Demo instance
+    -- * Demo instances
     DemoT,
     evalDemoT,
+    UnlawfulDemoT,
+    evalUnlawfulDemoT,
   )
 where
 
@@ -102,3 +104,21 @@ instance (Monad m) => MonadDemo Int (DemoT m) where
 -- | Evaluate a 'DemoT' into its base 'Monad'.
 evalDemoT :: (Monad m) => DemoT m a -> m a
 evalDemoT (DemoT act) = evalStateT act 0
+
+-- | A demonstration unlawful 'Monad', instance of 'MonadDemo'.
+--
+-- Its instance of 'MonadDemo' is such that any value greater than 10 is not
+-- actually stored, hence breaking the @retrieve yields what's stored@ law.
+newtype UnlawfulDemoT m a = UnlawfulDemoT (StateT Int m a)
+  deriving stock (Functor)
+  deriving newtype (Applicative, Monad, MonadTrans)
+
+instance (Monad m) => MonadDemo Int (UnlawfulDemoT m) where
+  store v
+    | v <= 10 = UnlawfulDemoT (put v)
+    | otherwise = return ()
+  retrieve = UnlawfulDemoT get
+
+-- | Evaluate an 'UnlawfulDemoT' into its base 'Monad'.
+evalUnlawfulDemoT :: (Monad m) => UnlawfulDemoT m a -> m a
+evalUnlawfulDemoT (UnlawfulDemoT act) = evalStateT act 0
