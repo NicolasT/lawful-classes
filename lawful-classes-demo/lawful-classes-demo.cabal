@@ -69,8 +69,8 @@ test-suite lawful-classes-demo-test
     , base                       ^>=4.14.3.0 || ^>=4.15.1.0 || ^>=4.16.4.0 || ^>=4.17.0.0
     , hedgehog                   ^>=1.2
     , lawful-classes-demo
-    , lawful-classes-hedgehog    ^>=0.1.0.0
-    , lawful-classes-quickcheck  ^>=0.1.0.0
+    , lawful-classes-hedgehog    ^>=0.1.1.0
+    , lawful-classes-quickcheck  ^>=0.1.1.0
     , QuickCheck                 ^>=2.14.2
     , tasty                      ^>=1.4.3
     , tasty-expected-failure     ^>=0.12.3
