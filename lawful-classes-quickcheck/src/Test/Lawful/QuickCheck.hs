@@ -11,8 +11,11 @@
 -- Support code to check @lawful-classes@ laws using QuickCheck and,
 -- optionally, Tasty.
 module Test.Lawful.QuickCheck
-  ( testLaws,
+  ( -- * Tasty integration
+    testLaws,
     testLawsWith,
+
+    -- * Plumbing
     toProperty,
   )
 where
@@ -27,15 +30,19 @@ import Test.Tasty.QuickCheck (testProperty)
 toProperty :: (forall a. m a -> PropertyM IO a) -> Law m -> Property
 toProperty run law = monadicIO $ maybe discard assert =<< run law
 
--- | Given 'Laws', create a @tasty@ 'TestTree'.
+-- | Given 'Laws' for @m@ and a way to evaluate an @m a@ in @'PropertyM' IO@,
+-- create a @tasty@ 'TestTree'.
 testLaws :: TestName -> (forall a. m a -> PropertyM IO a) -> Laws m -> TestTree
 testLaws = testLawsWith id
 
--- | Given 'Laws', create a @tasty@ 'TestTree', modifying all created
--- 'Property's with the given function.
+-- | Given 'Laws' for @m@ and a way to evaluate an @m a@ in @'PropertyT' IO@,
+-- create a @tasty@ 'TestTree', modifying all created 'Property's with the
+-- given function.
 --
 -- As an example, 'Test.QuickCheck.once' could be used to run every test only
--- once.
+-- once, e.g., because 'm' is not a transformer so there's no way to generate
+-- multiple test exemplars using some generator, except for the trivial
+-- constant generator.
 --
 -- @since 0.1.1.0
 testLawsWith :: (Property -> Property) -> TestName -> (forall a. m a -> PropertyM IO a) -> Laws m -> TestTree

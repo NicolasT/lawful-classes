@@ -11,8 +11,11 @@
 -- Support code to check @lawful-classes@ laws using Hedgehog and, optionally,
 -- Tasty.
 module Test.Lawful.Hedgehog
-  ( testLaws,
+  ( -- * Tasty integration
+    testLaws,
     testLawsWith,
+
+    -- * Plumbing
     toProperty,
   )
 where
@@ -26,15 +29,19 @@ import Test.Tasty.Hedgehog (testProperty)
 toProperty :: (forall a. m a -> PropertyT IO a) -> Law m -> Property
 toProperty run law = property $ maybe discard assert =<< evalM (run law)
 
--- | Given 'Laws', create a @tasty@ 'TestTree'.
+-- | Given 'Laws' for @m@ and a way to evaluate an @m a@ in @'PropertyT' IO@,
+-- create a @tasty@ 'TestTree'.
 testLaws :: TestName -> (forall a. m a -> PropertyT IO a) -> Laws m -> TestTree
 testLaws = testLawsWith id
 
--- | Given 'Laws', create a @tasty@ 'TestTree', modifying all created
--- 'Property's with the given function.
+-- | Given 'Laws' for @m@ and a way to evaluate an @m a@ in @'PropertyT' IO@,
+-- create a @tasty@ 'TestTree', modifying all created 'Property's with the
+-- given function.
 --
 -- As an example, 'Hedgehog.withTests' could be used to reduce or increase
--- the number of times tests are executed.
+-- the number of times tests are executed, e.g., because 'm' is not a
+-- transformer so there's no way to generate multiple test exemplars using
+-- some generator, except for the trivial constant generator.
 --
 -- @since 0.1.1.0
 testLawsWith :: (Property -> Property) -> TestName -> (forall a. m a -> PropertyT IO a) -> Laws m -> TestTree
