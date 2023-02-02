@@ -1,6 +1,6 @@
 # Revision history for lawful-classes-hedgehog
 
-## 0.1.2.1 -- YYYY-mm-dd
+## 0.1.2.1 -- 2023-02-02
 
 * Include `README.md` in the distribution.
 
