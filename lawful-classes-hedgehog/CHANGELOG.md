@@ -1,5 +1,9 @@
 # Revision history for lawful-classes-hedgehog
 
+## 0.1.2.1 -- YYYY-mm-dd
+
+* Include `README.md` in the distribution.
+
 ## 0.1.2.0 -- 2023-02-02
 
 * Add `Test.Lawful.Hedgehog.forAll(Show)`.
