@@ -37,6 +37,7 @@ jobs:
 
       - name: Check formatting of Cabal project descriptions
         run: |
-          for project in lawful-classes-types lawful-classes-hedgehog lawful-classes-quickcheck lawful-classes-demo; do
+          for project in lawful-classes-types lawful-classes-hedgehog lawful-classes-quickcheck; do
             cabal-fmt --Werror --check $project/$project.cabal
           done
+          cabal-fmt --Werror --check lawful-classes-readme.cabal
