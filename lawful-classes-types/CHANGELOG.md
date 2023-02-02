@@ -1,6 +1,6 @@
 # Revision history for lawful-classes-types
 
-## 0.1.0.2 -- YYYY-mm-dd
+## 0.1.0.2 -- 2023-02-02
 
 * Include `README.md` in the distribution.
 
