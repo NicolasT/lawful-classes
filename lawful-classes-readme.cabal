@@ -1,7 +1,7 @@
-cabal-version: 3.0
-name:          lawful-classes-readme
-version:       0.1.0.0
-synopsis:      Demo project for lawful-classes
+cabal-version:   3.0
+name:            lawful-classes-readme
+version:         0.1.0.0
+synopsis:        Demo project for lawful-classes
 description:
   A demo of the @lawful-classes@ ecosystem, including a library exposing a
   class with some laws and an instance of said class, and a test-suite which
@@ -11,19 +11,19 @@ description:
   check the laws, and the class and instance(s) are likely found in different
   packages.
 
-homepage:      https://github.com/NicolasT/lawful-classes
-license:       Apache-2.0
-license-file:  LICENSE
-author:        Nicolas Trangez
-maintainer:    ikke@nicolast.be
-copyright:     (c) 2023, Nicolas Trangez
-category:      Testing
-build-type:    Simple
+homepage:        https://github.com/NicolasT/lawful-classes
+license:         Apache-2.0
+license-file:    LICENSE
+author:          Nicolas Trangez
+maintainer:      ikke@nicolast.be
+copyright:       (c) 2023, Nicolas Trangez
+category:        Testing
+build-type:      Simple
+extra-doc-files: README.md
 
--- extra-doc-files:
 -- extra-source-files:
 
-tested-with:   GHC ==8.10.7 || ==9.0.2 || ==9.2.4 || ==9.2.5 || ==9.4.4
+tested-with:     GHC ==8.10.7 || ==9.0.2 || ==9.2.4 || ==9.2.5 || ==9.4.4
 
 source-repository head
   type:     git
