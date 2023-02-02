@@ -153,10 +153,10 @@ jobs:
       - name: initial cabal.project for sdist
         run: |
           touch cabal.project
+          echo "packages: $GITHUB_WORKSPACE/source/." >> cabal.project
           echo "packages: $GITHUB_WORKSPACE/source/lawful-classes-types" >> cabal.project
           echo "packages: $GITHUB_WORKSPACE/source/lawful-classes-hedgehog" >> cabal.project
           echo "packages: $GITHUB_WORKSPACE/source/lawful-classes-quickcheck" >> cabal.project
-          echo "packages: $GITHUB_WORKSPACE/source/lawful-classes-demo" >> cabal.project
           cat cabal.project
       - name: sdist
         run: |
@@ -168,32 +168,32 @@ jobs:
           find sdist -maxdepth 1 -type f -name '*.tar.gz' -exec tar -C $GITHUB_WORKSPACE/unpacked -xzvf {} \;
       - name: generate cabal.project
         run: |
+          PKGDIR_lawful_classes_readme="$(find "$GITHUB_WORKSPACE/unpacked" -maxdepth 1 -type d -regex '.*/lawful-classes-readme-[0-9.]*')"
+          echo "PKGDIR_lawful_classes_readme=${PKGDIR_lawful_classes_readme}" >> "$GITHUB_ENV"
           PKGDIR_lawful_classes_types="$(find "$GITHUB_WORKSPACE/unpacked" -maxdepth 1 -type d -regex '.*/lawful-classes-types-[0-9.]*')"
           echo "PKGDIR_lawful_classes_types=${PKGDIR_lawful_classes_types}" >> "$GITHUB_ENV"
           PKGDIR_lawful_classes_hedgehog="$(find "$GITHUB_WORKSPACE/unpacked" -maxdepth 1 -type d -regex '.*/lawful-classes-hedgehog-[0-9.]*')"
           echo "PKGDIR_lawful_classes_hedgehog=${PKGDIR_lawful_classes_hedgehog}" >> "$GITHUB_ENV"
           PKGDIR_lawful_classes_quickcheck="$(find "$GITHUB_WORKSPACE/unpacked" -maxdepth 1 -type d -regex '.*/lawful-classes-quickcheck-[0-9.]*')"
           echo "PKGDIR_lawful_classes_quickcheck=${PKGDIR_lawful_classes_quickcheck}" >> "$GITHUB_ENV"
-          PKGDIR_lawful_classes_demo="$(find "$GITHUB_WORKSPACE/unpacked" -maxdepth 1 -type d -regex '.*/lawful-classes-demo-[0-9.]*')"
-          echo "PKGDIR_lawful_classes_demo=${PKGDIR_lawful_classes_demo}" >> "$GITHUB_ENV"
           rm -f cabal.project cabal.project.local
           touch cabal.project
           touch cabal.project.local
+          echo "packages: ${PKGDIR_lawful_classes_readme}" >> cabal.project
           echo "packages: ${PKGDIR_lawful_classes_types}" >> cabal.project
           echo "packages: ${PKGDIR_lawful_classes_hedgehog}" >> cabal.project
           echo "packages: ${PKGDIR_lawful_classes_quickcheck}" >> cabal.project
-          echo "packages: ${PKGDIR_lawful_classes_demo}" >> cabal.project
+          echo "package lawful-classes-readme" >> cabal.project
+          echo "    ghc-options: -Werror=missing-methods" >> cabal.project
           echo "package lawful-classes-types" >> cabal.project
           echo "    ghc-options: -Werror=missing-methods" >> cabal.project
           echo "package lawful-classes-hedgehog" >> cabal.project
           echo "    ghc-options: -Werror=missing-methods" >> cabal.project
           echo "package lawful-classes-quickcheck" >> cabal.project
           echo "    ghc-options: -Werror=missing-methods" >> cabal.project
-          echo "package lawful-classes-demo" >> cabal.project
-          echo "    ghc-options: -Werror=missing-methods" >> cabal.project
           cat >> cabal.project <<EOF
           EOF
-          $HCPKG list --simple-output --names-only | perl -ne 'for (split /\s+/) { print "constraints: $_ installed\n" unless /^(lawful-classes-demo|lawful-classes-hedgehog|lawful-classes-quickcheck|lawful-classes-types)$/; }' >> cabal.project.local
+          $HCPKG list --simple-output --names-only | perl -ne 'for (split /\s+/) { print "constraints: $_ installed\n" unless /^(lawful-classes-hedgehog|lawful-classes-quickcheck|lawful-classes-readme|lawful-classes-types)$/; }' >> cabal.project.local
           cat cabal.project
           cat cabal.project.local
       - name: dump install plan
@@ -224,16 +224,15 @@ jobs:
           if [ $((HCNUMVER >= 90400)) -ne 0 ] ; then (cd ${PKGDIR_lawful_classes_types} && hlint -XHaskell2010 src) ; fi
           if [ $((HCNUMVER >= 90400)) -ne 0 ] ; then (cd ${PKGDIR_lawful_classes_hedgehog} && hlint -XHaskell2010 src) ; fi
           if [ $((HCNUMVER >= 90400)) -ne 0 ] ; then (cd ${PKGDIR_lawful_classes_quickcheck} && hlint -XHaskell2010 src) ; fi
-          if [ $((HCNUMVER >= 90400)) -ne 0 ] ; then (cd ${PKGDIR_lawful_classes_demo} && hlint -XHaskell2010 src) ; fi
       - name: cabal check
         run: |
+          cd ${PKGDIR_lawful_classes_readme} || false
+          ${CABAL} -vnormal check
           cd ${PKGDIR_lawful_classes_types} || false
           ${CABAL} -vnormal check
           cd ${PKGDIR_lawful_classes_hedgehog} || false
           ${CABAL} -vnormal check
           cd ${PKGDIR_lawful_classes_quickcheck} || false
-          ${CABAL} -vnormal check
-          cd ${PKGDIR_lawful_classes_demo} || false
           ${CABAL} -vnormal check
       - name: haddock
         run: |
